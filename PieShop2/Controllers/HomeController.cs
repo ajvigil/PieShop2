@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using PieShop2.Models;
+using PieShop2.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
-namespace PieShop2.Controllers
+namespace BethanysPieShop.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController: Controller
     {
         private readonly IPieRepository _pieRepository;
 
@@ -17,14 +16,18 @@ namespace PieShop2.Controllers
         {
             _pieRepository = pieRepository;
         }
-        // GET: /<controller>/
+
         public IActionResult Index()
         {
-            ViewBag.Title = "Pie Overview";
-
             var pies = _pieRepository.GetAllPies().OrderBy(p => p.Name);
 
-            return View(pies);
+            var homeViewModel = new HomeViewModel()
+            {
+                Pies = pies.ToList(),
+                Title = "Welcome to Bethany's Pie Shop"
+            };
+
+            return View(homeViewModel);
         }
     }
 }
